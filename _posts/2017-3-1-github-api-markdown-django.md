@@ -205,12 +205,12 @@ def post_list(request):
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{{ title }}</title>
+    <title>{{{ title }}}</title>
 </head>
 <body>
 {% for post in posts.iterator %}		<!-- added from this line -->
-    <h1>{{ post.title }}</h1>
-    {{ post.text }}
+    <h1>{{{ post.title }}}</h1>
+    {{{ post.text }}}
 {% endfor %}							<!-- to this line -->
 </body>
 </html>
@@ -256,7 +256,7 @@ class Post(models.Model):
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{{ title }}</title>
+    <title>{{{ title }}}</title>
 </head>
 <body>
 {% for post in posts.iterator %}
