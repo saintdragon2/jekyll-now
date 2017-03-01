@@ -2,7 +2,7 @@
 layout: post
 title: Github API를 이용하여 django에서 Markdown문서 렌더링하기
 ---
-# Github API를 이용하여 django에서 Markdown문서 렌더링하기
+
 Django를 이용해 개인 블로그를 개발하면서, Markdown 문법을 사용하기로 했다. 그런데 Markdown 문법이 조금씩 다 다르기 때문에, 어떤 parser를 쓰느냐에 따라 결과가 달라지는 문제가 있었다. 원래는 [django-markdown2](https://pypi.python.org/pypi/django-markdown2)을 사용했으나, github의 `README.md`를 작성하고 그 내용을 내가 만든 django 기반의 블로그에 옮겨 붙이면, 렌더링이 될 때 깨지고 난리도 아니었다. 
 
 그래서 어떻게 하든, Github랑 똑같이 렌더링해주는 걸 찾아 헤맸고, Github에서 API를 제공하고 있다는 것을 알게 되었다. 
@@ -95,7 +95,7 @@ $ python manage.py migrate
 $ python manage.py runserver
 ```
 아래와 같이 성공적(?)으로 Template이 없다는 오류 화면이 뜬다. 
-![Template Does Not Exists](./documents/images/no_template.png)
+![Template Does Not Exists](https://raw.githubusercontent.com/saintdragon2/django-gfm/master/documents/images/no_template.png)
 
 template을 만들자. `blogengine`폴더 아래에 `templates` 폴더를 만들고 그 밑에 또 `blogengine`이라는 폴더를 만든다. 그리고 그 아래에 `post_list.html`파일을 만든다. 그 파일을 아래와 같이 작성한다. 
 ```html
@@ -111,7 +111,7 @@ template을 만들자. `blogengine`폴더 아래에 `templates` 폴더를 만들
 </html>
 ```
 다시 브라우저를 열어보면!!!
-![Template Does Not Exists](./documents/images/no_template.png)
+![Template Does Not Exists](https://raw.githubusercontent.com/saintdragon2/django-gfm/master/documents/images/no_template.png)
 음 여전히 안된다. 여전히 template 파일이 없다고 한다. `settings.py`를 수정하는 것을 깜빡 했다. `settings.py`파일을 수정해서, template파일들이 각 앱의 `templates`폴더에 있음을 알려준다. 
 ```python
 # django_gfm_prj/settings.py
@@ -134,7 +134,7 @@ TEMPLATES = [
 #...
 ```
 이제 다시 해보면, 잘 된다. 
-![Empty screen](./documents/images/empty_screen.png)
+![Empty screen](https://raw.githubusercontent.com/saintdragon2/django-gfm/master/documents/images/empty_screen.png)
 
 ## Admin페이지에서 post 작성하기
 admin페이지에 들어가려면 `superuser`를 만들어야 한다. `Ctrl+c`로 돌아가고 있던 서버를 죽이고, 아래와 같이 입력한다. 
@@ -149,7 +149,7 @@ Superuser created successfully.
 password는 입력을 해도 화면상 아무런 변화도 없는데, 잘 되고 있는 것이니 놀라지 말고 입력하자. 필자는 `supersuper`를 비밀번호로 입력했다. 
 
 다시 터미널에서 `python manage.py runserver`를 입력하고, 브라우저에서 `127.0.0.1:8000/admin/`에 가서 로그인을 해보자. 
-![Empty screen](./documents/images/logged_in_no_blog.png)
+![Empty screen](https://raw.githubusercontent.com/saintdragon2/django-gfm/master/documents/images/logged_in_no_blog.png)
 잘 되긴 했으나, 블로그가 없다. 등록하자. `blogengine/admin.py`를 아래와 같이 수정하면 된다. 
 ```python 
 # blogengine/admin.py
@@ -159,12 +159,12 @@ from .models import Post
 
 admin.site.register(Post)
 ```
-![post](./documents/images/admin_shows_post.png)
+![post](https://raw.githubusercontent.com/saintdragon2/django-gfm/master/documents/images/admin_shows_post.png)
 를릭클릭하고 들어가서 post를 작성하자. 
-![new post](./documents/images/new_post.png)
+![new post](https://raw.githubusercontent.com/saintdragon2/django-gfm/master/documents/images/new_post.png)
 
 저장 버튼을 클릭하면, 역시나 잘 된다. 그런데, 저장되고 나서 나오는 post list 화면에서 모든 객체가 똑같이 `Post object`라고 나올 모양이다. Post 모델에 `__str__`을 추가 해야겠다.  
-![post list in admin](./documents/images/post_list_in_admin.png)
+![post list in admin](https://raw.githubusercontent.com/saintdragon2/django-gfm/master/documents/images/post_list_in_admin.png)
 ```python
 # blogengine/models.py
 from django.db import models
@@ -178,7 +178,7 @@ class Post(models.Model):
         return self.title		#<-- and this line
 ```
 잘 된다!
-![post list with str](./documents/images/post_list_with_str.png)
+![post list with str](https://raw.githubusercontent.com/saintdragon2/django-gfm/master/documents/images/post_list_with_str.png)
 
 # 첫 화면에서 포스트 보기
 `post_list`에서 모든 post를 넘겨줘야 template파일에서 post를 화면에 뿌려줄 수 있다. 아래와 같이 `blogengine/views.py`를 수정한다. 
@@ -216,7 +216,7 @@ def post_list(request):
 </html>
 ```
 잘 된다. 하지만, markdown이 적용되지는 않았다....
-![post list on index page](./documents/images/posts_in_index.png)
+![post list on index page](https://raw.githubusercontent.com/saintdragon2/django-gfm/master/documents/images/posts_in_index.png)
 
 ## Github API 이용하기
 이걸 설명하기 위해 이 먼길을 왔다. 추가하는 방법은 매우 간단하다. markdown으로 작성한 text를 github api에 날리면, 거기서 html로 변환된 결과를 돌려준다. 그럼 그걸 우리 화면에 뿌려주면 되는거다. 
@@ -267,7 +267,7 @@ class Post(models.Model):
 </html>
 ```
 잘 되는 것 같다.
-![gfm index](./documents/images/gfm_index.png)
+![gfm index](https://raw.githubusercontent.com/saintdragon2/django-gfm/master/documents/images/gfm_index.png)
 조금 더 예쁘게 하고 싶어서 https://bootswatch.com/에서 css를 하나 골랐다. 그리고 아래와 같이 적용. 
 ```html
 ...
@@ -275,7 +275,7 @@ class Post(models.Model):
 ...
 ```
 짜!잔!
-![with_css](./documents/images/with_css.png)
+![with_css](https://raw.githubusercontent.com/saintdragon2/django-gfm/master/documents/images/with_css.png)
 
 ## 정리하며...
 맨 마지막 파트만 설명하면 되었을 것을 너무 많은 내용을 불필요하게 담은 것이 아닐까 싶다. 더 구체적인 활용방법은 여러분의 응용력에 맡기기로 하고 이쯤에서 정리한다. 
