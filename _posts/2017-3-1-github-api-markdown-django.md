@@ -259,12 +259,10 @@ class Post(models.Model):
     <title>{{ title }}</title>
 </head>
 <body>
-{% raw %}
 {% for post in posts.iterator %}
     <h1>{{ post.title }}/h1>
     {{ post.gfm | safe }}		<!-- changed this line -->
 {% endfor %}
-{% endraw %}
 </body>
 </html>
 ```
