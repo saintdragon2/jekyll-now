@@ -260,7 +260,7 @@ class Post(models.Model):
 </head>
 <body>
 {% for post in posts.iterator %}
-    <h1>{{ post.title }}/h1>
+    <h1>{{ post.title }}</h1>
     {{ post.gfm | safe }}		<!-- changed this line -->
 {% endfor %}
 </body>
