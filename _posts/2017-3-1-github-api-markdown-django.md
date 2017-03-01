@@ -256,13 +256,15 @@ class Post(models.Model):
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{{{ title }}}</title>
+    <title>{{ title }}</title>
 </head>
 <body>
+{% raw %}
 {% for post in posts.iterator %}
-    <h1>{{{ post.title }}}</h1>
-    {{{ post.gfm | safe }}}		<!-- changed this line -->
+    <h1>{{ post.title }}/h1>
+    {{ post.gfm | safe }}		<!-- changed this line -->
 {% endfor %}
+{% endraw %}
 </body>
 </html>
 ```
