@@ -99,6 +99,7 @@ $ python manage.py runserver
 
 template을 만들자. `blogengine`폴더 아래에 `templates` 폴더를 만들고 그 밑에 또 `blogengine`이라는 폴더를 만든다. 그리고 그 아래에 `post_list.html`파일을 만든다. 그 파일을 아래와 같이 작성한다. 
 ```html
+{% raw %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -109,6 +110,7 @@ template을 만들자. `blogengine`폴더 아래에 `templates` 폴더를 만들
 
 </body>
 </html>
+{% endraw %}
 ```
 다시 브라우저를 열어보면!!!
 ![Template Does Not Exists](https://raw.githubusercontent.com/saintdragon2/django-gfm/master/documents/images/no_template.png)
@@ -201,19 +203,21 @@ def post_list(request):
 ```
 이제 template파일은 `post_list.html`을 수정한다. 
 ```html
+{% raw %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{{{ title }}}</title>
+    <title>{{ title }}</title>
 </head>
 <body>
 {% for post in posts.iterator %}		<!-- added from this line -->
-    <h1>{{{ post.title }}}</h1>
-    {{{ post.text }}}
+    <h1>{{ post.title }}</h1>
+    {{ post.text }}
 {% endfor %}							<!-- to this line -->
 </body>
 </html>
+{% endraw %}
 ```
 잘 된다. 하지만, markdown이 적용되지는 않았다....
 ![post list on index page](https://raw.githubusercontent.com/saintdragon2/django-gfm/master/documents/images/posts_in_index.png)
@@ -252,6 +256,7 @@ class Post(models.Model):
 ```
 그리고 마지막으로 template파일을 아래와 같이 수정하면 된다. 
 ```html
+{% raw %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -265,6 +270,7 @@ class Post(models.Model):
 {% endfor %}
 </body>
 </html>
+{% endraw %}
 ```
 잘 되는 것 같다.
 ![gfm index](https://raw.githubusercontent.com/saintdragon2/django-gfm/master/documents/images/gfm_index.png)
